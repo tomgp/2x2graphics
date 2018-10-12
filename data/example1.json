@@ -1,0 +1,14 @@
+{
+  "title":"Approval matrix",
+  "subtitle":"",
+  "axes":[
+    ["",""],
+    ["",""]
+  ],
+  "items":[
+    {
+      "Label":"",
+      "Position":{"x":0, "y":0}
+    }
+  ]
+}
