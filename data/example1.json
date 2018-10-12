@@ -1,14 +1,26 @@
 {
-  "title":"Approval matrix",
-  "subtitle":"",
+  "title":"2x2 Matrix",
+  "date":"",
+  "author":"Tom P",
   "axes":[
-    ["",""],
-    ["",""]
+    ["X Min","X Max"],
+    ["Y Min","Y Max"]
   ],
   "items":[
     {
-      "Label":"",
-      "Position":{"x":0, "y":0}
+      "Label":"Item one", "Position":{"x":0.5, "y":-0.5}
+    },
+    {
+      "Label":"Item two", "Position":{"x":0.5, "y":0.5}
+    },
+    {
+      "Label":"Item three", "Position":{"x":-0.5, "y":-0.5}
+    },
+    {
+      "Label":"Item four", "Position":{"x":-0.5, "y":0.5}
+    },
+    {
+      "Label":"Item five", "Position":{"x":0, "y":0}
     }
   ]
 }
