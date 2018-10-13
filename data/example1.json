@@ -2,25 +2,25 @@
   "title":"2x2 Matrix",
   "date":"",
   "author":"Tom P",
-  "axes":[
-    ["X Min","X Max"],
-    ["Y Min","Y Max"]
-  ],
+  "axes":{
+    "x": ["X Min","X Max"],
+    "y": ["Y Min","Y Max"]
+  },
   "items":[
     {
-      "Label":"Item one", "Position":{"x":0.5, "y":-0.5}
+      "label":"Item one", "position":{"x":0.5, "y":-0.5}
     },
     {
-      "Label":"Item two", "Position":{"x":0.5, "y":0.5}
+      "label":"Item two", "position":{"x":0.5, "y":0.5}
     },
     {
-      "Label":"Item three", "Position":{"x":-0.5, "y":-0.5}
+      "label":"Item three", "position":{"x":-0.5, "y":-0.5}
     },
     {
-      "Label":"Item four", "Position":{"x":-0.5, "y":0.5}
+      "label":"Item four", "position":{"x":-0.5, "y":0.5}
     },
     {
-      "Label":"Item five", "Position":{"x":0, "y":0}
+      "label":"Item five", "position":{"x":0, "y":0}
     }
   ]
 }
