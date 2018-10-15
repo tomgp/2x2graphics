@@ -19,9 +19,9 @@ const Matrix = ({
   items=[{label:'a', position:{x:1,y:1}}], 
   title="Title", 
   axes={
-    x:['xmin','xmax'], 
-    y:['ymin','ymax']}, 
-  date=new Date(), 
+    x:['xmin', 'xmax'],
+    y:['ymin', 'ymax']},
+  date=new Date(),
   author='author'
 })=>{
   const height = 500;
