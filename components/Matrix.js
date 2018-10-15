@@ -26,7 +26,7 @@ const Matrix = ({
 })=>{
   const height = 500;
   const width = 500;
-  const scaledItems = items.map((d,i)=>{
+  const scaledItems = items.map((d)=>{
     return {
       label:d.label,
       position:{
