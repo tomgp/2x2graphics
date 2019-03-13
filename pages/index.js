@@ -1,14 +1,26 @@
-import Link from 'next/link';
-import Matrix from '../components/Matrix';
+import React from 'react'
+import { connect } from 'react-redux'
+import Examples from '../components/examples'
 
-const exampleData = require('../data/example1.json');
+class Index extends React.Component {
+  static getInitialProps ({ reduxStore, req }) {
+//    const isServer = !!req
 
-const Index = () => (
-  <div>
-    <h1>{exampleData.title}</h1>
-    <Matrix items={exampleData.items} />
-    <Link href="/about"><a>About</a></Link>
-  </div>
-);
+    return {}
+  }
 
-export default Index;
+  componentDidMount () {
+    // const { dispatch } = this.props
+    // this.timer = startClock(dispatch)
+  }
+
+  componentWillUnmount () {
+    // clearInterval(this.timer)
+  }
+
+  render () {
+    return <Examples />
+  }
+}
+
+export default connect()(Index)
