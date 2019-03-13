@@ -39,9 +39,9 @@ export const reducer = (state = exampleInitialState, action) => {
       
     case actionTypes.MOVE_ITEM:
       // find the thing, and set its new x and y values
-      const i = _.findIndex(newState.items, { 'name': action.name });
-      newState.items[i].x = action.x;
-      newState.items[i].y = action.y;
+      const i = _.findIndex(newState.rateableitems, { 'name': action.name });
+      newState.rateableitems[i].x = action.x;
+      newState.rateableitems[i].y = action.y;
       return newState;
 
     default:
