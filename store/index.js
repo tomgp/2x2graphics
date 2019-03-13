@@ -4,12 +4,8 @@ import thunkMiddleware from 'redux-thunk';
 import _ from 'lodash';
 
 const exampleInitialState = {
-  lastUpdate: 0,
-  light: false,
-  count: 0,
-
   title: 'EXAMPLE 2x2',
-  items: [
+  rateableitems: [
     { name: 'Thing One', x: -0.5, y: 0.5 },
     { name: 'Thing Two', x: 0.5, y: 0.5 },
     { name: 'Thing Three', x: 0.5, y: -0.5 },
@@ -72,6 +68,6 @@ export function initializeStore (initialState = exampleInitialState) {
   return createStore(
     reducer,
     initialState,
-    composeWithDevTools(applyMiddleware(thunkMiddleware))
+    applyMiddleware(thunkMiddleware)
   )
 }

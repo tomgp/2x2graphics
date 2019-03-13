@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Examples from '../components/examples'
+import TwoByTwo from '../components/two-by-two'
 
 class Index extends React.Component {
   static getInitialProps ({ reduxStore, req }) {
@@ -19,7 +19,7 @@ class Index extends React.Component {
   }
 
   render () {
-    return <Examples />
+    return <TwoByTwo />
   }
 }
 

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import Grid from './grid';
+import Axes from './axes';
 import { scaleLinear } from 'd3-scale';
 import { connect } from 'react-redux';
 import { addItem, removeItem, moveItem } from '../store';
 
 function mapStateToProps (state) {
-  const { title, items } = state
-  return { title, items }
+  const { title, rateableitems } = state
+  return { title, rateableitems }
 }
 
 class Matrix extends Component {
@@ -48,7 +50,7 @@ class Matrix extends Component {
   }
 
   render () {
-    const { items } = this.props;
+    const { rateableitems } = this.props;
     const width = 500;
     const height = 500;
     const radius = 10;
@@ -63,35 +65,38 @@ class Matrix extends Component {
     return (
       <div>
         <svg className="chart" viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
+          <Grid className="grid" width={width} height={height} minor={5} major={50} />
+          <Axes width={width} height={height} />
           {
-            items.map((item, i)=>
+            rateableitems.map((item, i)=>
               (<g transform={`translate(${this.hScale(item.x)},${this.vScale(item.y)})`} key={`chart-item-${i}`}>
+                <text 
+                  dx={(item.x > 0.5 ? -radius*2 : radius*2 )} 
+                  dy={radius*2/3}
+                  textAnchor={(item.x > 0.5 ? 'end' : 'start')}>{item.name}
+                </text>
                 <circle
                   name={item.name} 
                   cx={0} 
                   cy={0} 
                   r={radius}
                   onMouseDown={this.handleMouseDown}
-                  onMouseUp={this.handleMouseUp}></circle>
-                <text dx={radius*2} dy={radius}>{item.name}</text>
+                  onMouseUp={this.handleMouseUp}>
+                </circle>
               </g>))
           }
         </svg>
         <hr />
         {
-          items.map((item, i) => (<button key={`remove-button${i}`} onClick={()=>{
+          rateableitems.map((item, i) => (<button key={`remove-button${i}`} onClick={()=>{
               this.remove(item.name) }}>Remove {`${item.name}`}</button>)
           )
         }
         <hr />
 
-        <button onClick={()=>{
-          this.add('new', 0.5, -0.5)
-        }}>Add</button>
-
         <style jsx global>{
           `.chart{
-            border:1px solid black;
+            
           }
           circle{
             fill:white;
@@ -106,6 +111,27 @@ class Matrix extends Component {
             -ms-user-select:none;
             -o-user-select:none;
             user-select:none;
+          }
+          rect.grid{
+            fill:none;
+            stroke:#000;
+            stroke-width:10px;
+          }
+          line.grid.minor{
+            fill:none;
+            stroke:#eee;
+          }
+          line.grid.major{
+            fill:none;
+            stroke:#aaa;
+          }
+          .axes text{
+            font-family:sans-serif;
+          }
+          .axes.outline{
+            fill:none;
+            stroke:#FFF;
+            stroke-width:2;
           }`
         }</style>
       </div>
