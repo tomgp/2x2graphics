@@ -3,7 +3,7 @@ import Grid from './grid';
 import Axes from './axes';
 import { scaleLinear } from 'd3-scale';
 import { connect } from 'react-redux';
-import { addItem, removeItem, moveItem } from '../store';
+import { addItem, removeItem, moveItem, loadList } from '../store';
 
 function mapStateToProps (state) {
   const { title, rateableitems } = state
@@ -12,35 +12,40 @@ function mapStateToProps (state) {
 
 class Matrix extends Component {
 
-  add = (name='name', x=0, y=0) => {
+  add = (title='title', x=0, y=0) => {
     const { dispatch } = this.props;
-    dispatch(addItem(name, x, y))
+    dispatch(addItem(title, x, y))
   };
 
-  remove = (name) => {
+  remove = (title) => {
     const { dispatch } = this.props;
-    dispatch(removeItem(name))
+    dispatch(removeItem(title))
   };
 
-  move = (name='name', x=0, y=0) => {
+  move = (title='title', x=0, y=0) => {
     const { dispatch } = this.props;
-    dispatch(moveItem(name, x, y))
+    dispatch(moveItem(title, x, y))
+  };
+
+  load = (id) => {
+    const { dispatch } = this.props;
+    dispatch(loadList(id));
   };
 
   handleMouseMove = (e) => {
     const x = this.hScale.invert(e.offsetX);
     const y = this.vScale.invert(e.offsetY);
-    const name = e.target.getAttribute('name');
+    const title = e.target.getAttribute('title');
     e.stopPropagation();
-    if(name && this.currentlyDragging == null){ 
-      this.move(`${name}`, x, y);
+    if(title && this.currentlyDragging == null){ 
+      this.move(`${title}`, x, y);
     }else if(this.currentlyDragging){
       this.move(`${this.currentlyDragging}`, x, y);
     };
   }
 
   handleMouseDown = (e) => {
-    this.currentlyDragging = e.target.getAttribute('name');
+    this.currentlyDragging = e.target.getAttribute('title');
     document.addEventListener('mousemove', this.handleMouseMove);
   }
 
@@ -56,11 +61,11 @@ class Matrix extends Component {
     const radius = 10;
     this.hScale = scaleLinear()
       .range([0, width])
-      .domain([-1,1]);
+      .domain([-100,100]);
     
     this.vScale = scaleLinear()
       .range([0, height])
-      .domain([-1,1]);
+      .domain([100,-100]);
 
     return (
       <div>
@@ -71,12 +76,12 @@ class Matrix extends Component {
             rateableitems.map((item, i)=>
               (<g transform={`translate(${this.hScale(item.x)},${this.vScale(item.y)})`} key={`chart-item-${i}`}>
                 <text 
-                  dx={(item.x > 0.5 ? -radius*2 : radius*2 )} 
+                  dx={(item.x > 50 ? -radius*2 : radius*2 )} 
                   dy={radius*2/3}
-                  textAnchor={(item.x > 0.5 ? 'end' : 'start')}>{item.name}
+                  textAnchor={(item.x > 50 ? 'end' : 'start')}>{item.title}
                 </text>
                 <circle
-                  name={item.name} 
+                  title={item.title} 
                   cx={0} 
                   cy={0} 
                   r={radius}
@@ -89,11 +94,11 @@ class Matrix extends Component {
         <hr />
         {
           rateableitems.map((item, i) => (<button key={`remove-button${i}`} onClick={()=>{
-              this.remove(item.name) }}>Remove {`${item.name}`}</button>)
+              this.remove(item.title) }}>Remove {`${item.title}`}</button>)
           )
         }
         <hr />
-
+        <a href="#" onMouseUp={()=>this.load(1)}>LOAD</a>
         <style jsx global>{
           `.chart{
             
