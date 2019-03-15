@@ -6,8 +6,15 @@ import { connect } from 'react-redux';
 import { addItem, removeItem, moveItem, loadList } from '../store';
 
 function mapStateToProps (state) {
-  const { title, rateableitems } = state
-  return { title, rateableitems }
+  const { title, rateableitems, xmin, xmax, ymin, ymax, description } = state
+  return { title, rateableitems, xmin, xmax, ymin, ymax, description }
+}
+
+function checkHTML(markup){
+  if(markup && String(markup).indexOf('<script>') < 0){
+    return markup;
+  }
+  return '<p>&nbsp;</p>'
 }
 
 class Matrix extends Component {
@@ -55,9 +62,9 @@ class Matrix extends Component {
   }
 
   render () {
-    const { rateableitems } = this.props;
-    const width = 500;
-    const height = 500;
+    const { rateableitems, xmin, xmax, ymin, ymax, description } = this.props;
+    const width = 1000;
+    const height = 1000;
     const radius = 10;
     this.hScale = scaleLinear()
       .range([0, width])
@@ -71,7 +78,7 @@ class Matrix extends Component {
       <div>
         <svg className="chart" viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
           <Grid className="grid" width={width} height={height} minor={5} major={50} />
-          <Axes width={width} height={height} />
+          <Axes width={width} height={height} xmin={xmin} xmax={xmax} ymin={ymin} ymax={ymax} />
           {
             rateableitems.map((item, i)=>
               (<g transform={`translate(${this.hScale(item.x)},${this.vScale(item.y)})`} key={`chart-item-${i}`}>
@@ -91,6 +98,7 @@ class Matrix extends Component {
               </g>))
           }
         </svg>
+        <div dangerouslySetInnerHTML={{__html: checkHTML(description)}}></div>
         <hr />
         {
           rateableitems.map((item, i) => (<button key={`remove-button${i}`} onClick={()=>{

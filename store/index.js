@@ -6,13 +6,8 @@ import _ from 'lodash';
 
 
 const exampleInitialState = {
-  title: 'EXAMPLE 2x2',
-  rateableitems: [
-    { title: 'Thing One', x: -0.5, y: 0.5 },
-    { title: 'Thing Two', x: 0.5, y: 0.5 },
-    { title: 'Thing Three', x: 0.5, y: -0.5 },
-    { title: 'Thing Four', x: -0.5, y: -0.5 }
-  ]
+  title: 'Loading...',
+  rateableitems: []
 }
 
 export const actionTypes = {
