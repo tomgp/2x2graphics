@@ -61,11 +61,21 @@ class Matrix extends Component {
     document.removeEventListener('mousemove', this.handleMouseMove);
   }
 
+  componentDidMount = ()=>{
+    const margin = 100;
+    console.log(document.documentElement.clientWidth);
+    const dim = Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight) - margin;
+    this.width = dim;
+    this.height = dim;
+    this.load(1);
+  }
+
   render () {
     const { rateableitems, xmin, xmax, ymin, ymax, description } = this.props;
-    const width = 1000;
-    const height = 1000;
+    const width = this.width ? this.width : 1000;
+    const height = this.height ? this.height : 1000;
     const radius = 10;
+
     this.hScale = scaleLinear()
       .range([0, width])
       .domain([-100,100]);
@@ -82,9 +92,14 @@ class Matrix extends Component {
           {
             rateableitems.map((item, i)=>
               (<g transform={`translate(${this.hScale(item.x)},${this.vScale(item.y)})`} key={`chart-item-${i}`}>
-                <text 
+                <text className="item-outline"
                   dx={(item.x > 50 ? -radius*2 : radius*2 )} 
-                  dy={radius*2/3}
+                  dy={radius * 2/3}
+                  textAnchor={(item.x > 50 ? 'end' : 'start')}>{item.title}
+                </text>
+                <text
+                  dx={(item.x > 50 ? -radius*2 : radius*2 )} 
+                  dy={radius * 2/3}
                   textAnchor={(item.x > 50 ? 'end' : 'start')}>{item.title}
                 </text>
                 <circle
@@ -99,14 +114,7 @@ class Matrix extends Component {
           }
         </svg>
         <div dangerouslySetInnerHTML={{__html: checkHTML(description)}}></div>
-        <hr />
-        {
-          rateableitems.map((item, i) => (<button key={`remove-button${i}`} onClick={()=>{
-              this.remove(item.title) }}>Remove {`${item.title}`}</button>)
-          )
-        }
-        <hr />
-        <a href="#" onMouseUp={()=>this.load(1)}>LOAD</a>
+
         <style jsx global>{
           `.chart{
             
@@ -124,11 +132,17 @@ class Matrix extends Component {
             -ms-user-select:none;
             -o-user-select:none;
             user-select:none;
+            font-family:sans-serif;
+          }
+          .item-outline{
+            fill:none;
+            stroke:#FFF;
+            stroke-width:3px;
           }
           rect.grid{
             fill:none;
             stroke:#000;
-            stroke-width:10px;
+            stroke-width:5px;
           }
           line.grid.minor{
             fill:none;
@@ -139,12 +153,13 @@ class Matrix extends Component {
             stroke:#aaa;
           }
           .axes text{
+            font-size: 30px;
             font-family:sans-serif;
           }
           .axes.outline{
             fill:none;
             stroke:#FFF;
-            stroke-width:2;
+            stroke-width:10;
           }`
         }</style>
       </div>
