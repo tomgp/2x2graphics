@@ -1,22 +1,28 @@
 import { createStore, applyMiddleware } from 'redux';
-// import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import _ from 'lodash';
+import { indexURL, getItemsURL } from './storeconfig';
 
 
 
 const exampleInitialState = {
   title: 'Loading...',
-  rateableitems: []
+  items: [],
+  worksheets: []
 }
 
 export const actionTypes = {
   ADD_ITEM: 'ADD_ITEM',
   REMOVE_ITEM: 'REMOVE_ITEM',
   MOVE_ITEM: 'MOVE_ITEM',
-  LOAD_LIST_BEGIN: 'LOAD_LIST_BEGIN',
-  LOAD_LIST_SUCCESS: 'LOAD_LIST_SUCCESS',
-  LOAD_LIST_FAILURE: 'LOAD_LIST_FAILURE'
+
+  LOAD_ITEMS_BEGIN: 'LOAD_LIST_BEGIN',
+  LOAD_ITEMS_SUCCESS: 'LOAD_LIST_SUCCESS',
+  LOAD_ITEMS_FAILURE: 'LOAD_LIST_FAILURE',
+
+  LOAD_INDEX_BEGIN: 'LOAD_INDEX_BEGIN',
+  LOAD_INDEX_SUCCESS: 'LOAD_INDEX_SUCCESS',
+  LOAD_INDEX_FAILURE: 'LOAD_INDEX_FAILURE'
 }
 
 // REDUCERS
@@ -34,22 +40,34 @@ export const reducer = (state = exampleInitialState, action) => {
       
     case actionTypes.MOVE_ITEM:
       // find the thing, and set its new x and y values
-      const i = _.findIndex(newState.rateableitems, { 'title': action.name });
-      newState.rateableitems[i].x = action.x;
-      newState.rateableitems[i].y = action.y;
+      const i = _.findIndex(newState.items, { 'title': action.name });
+      newState.items[i].x = action.x;
+      newState.items[i].y = action.y;
       return newState;
 
-    case actionTypes.LOAD_LIST_BEGIN:
-      console.log('start loading...');
+    case actionTypes.LOAD_INDEX_BEGIN:
+      console.log('start loading index items...');
       return newState;
 
-    case actionTypes.LOAD_LIST_SUCCESS:
-      console.log('success loading...');
+    case actionTypes.LOAD_INDEX_SUCCESS:
+      console.log('success loading index items...');
+      return newState;
+    
+    case actionTypes.LOAD_INDEX_SUCCESS:
+      console.log('fail loading index items...');
+      return newState;
+
+    case actionTypes.LOAD_ITEMS_BEGIN:
+      console.log('start loading items...');
+      return newState;
+
+    case actionTypes.LOAD_ITEMS_SUCCESS:
+      console.log('success loading items...');
       console.log(action.data);
       return action.data;
 
-    case actionTypes.LOAD_LIST_FAILURE:
-      console.log('failed loading :\'(');
+    case actionTypes.LOAD_ITEMS_FAILURE:
+      console.log('failed loading items :\'(');
       return newState;
 
     default:
@@ -71,23 +89,37 @@ export const moveItem = (name, x, y) => dispatch => {
   return dispatch({ type: actionTypes.MOVE_ITEM, name, x, y })
 }
 
-const apiRoot = 'http://localhost:1337/';
-const listURL = (id) => `${apiRoot}twobytwolists/${id}`;
 
-export const loadList = (id) => {
+
+export const loadItems = (id) => {
   return dispatch => {
-    dispatch({ type: actionTypes.LOAD_LIST_BEGIN });
-    return fetch(listURL(id))
+    dispatch({ type: actionTypes.LOAD_ITEMS_BEGIN });
+    return fetch(getItemsURL(id))
       .then(handleErrors)
       .then(res=>res.json())
       .then(json=>{
-        dispatch({ type: actionTypes.LOAD_LIST_SUCCESS, data:json });
+        dispatch({ type: actionTypes.LOAD_ITEMS_SUCCESS, data:json });
         return json;
       })
-      .catch(err => dispatch({ type: actionTypes.LOAD_LIST_FAILURE, error:err }))
+      .catch(err => dispatch({ type: actionTypes.LOAD_ITEMS_FAILURE, error:err }));
 
   }
 }
+
+export const loadIndex = () => {
+  return dispatch => {
+    dispatch({ type: actionTypes.LOAD_INDEX_BEGIN });
+    return fetch(indexURL)
+      .then(handleErrors)
+      .then(res=>res.json())
+      .then(json=>{
+        dispatch({ type: actionTypes.LOAD_INDEX_SUCCESS, data:json });
+        return json;
+      })
+      .catch(err => dispatch({ type: actionTypes.LOAD_INDEX_FAILURE, error:err }));
+  }
+}
+
 
 function handleErrors(response) {
   if (!response.ok) {

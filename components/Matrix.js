@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { addItem, removeItem, moveItem, loadList } from '../store';
 
 function mapStateToProps (state) {
-  const { title, rateableitems, xmin, xmax, ymin, ymax, description } = state
-  return { title, rateableitems, xmin, xmax, ymin, ymax, description }
+  const { title, items, xmin, xmax, ymin, ymax, description } = state
+  return { title, items, xmin, xmax, ymin, ymax, description }
 }
 
 function checkHTML(markup){
@@ -71,7 +71,7 @@ class Matrix extends Component {
   }
 
   render () {
-    const { rateableitems, xmin, xmax, ymin, ymax, description } = this.props;
+    const { items, xmin, xmax, ymin, ymax, description } = this.props;
     const width = this.width ? this.width : 1000;
     const height = this.height ? this.height : 1000;
     const radius = 10;
@@ -90,7 +90,7 @@ class Matrix extends Component {
           <Grid className="grid" width={width} height={height} minor={5} major={50} />
           <Axes width={width} height={height} xmin={xmin} xmax={xmax} ymin={ymin} ymax={ymax} />
           {
-            rateableitems.map((item, i)=>
+            items.map((item, i)=>
               (<g transform={`translate(${this.hScale(item.x)},${this.vScale(item.y)})`} key={`chart-item-${i}`}>
                 <text className="item-outline"
                   dx={(item.x > 50 ? -radius*2 : radius*2 )} 
